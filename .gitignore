@@ -1,0 +1,36 @@
+# OS
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+npm-debug.log*
+
+# Dependencies (none today, but future-proof)
+node_modules/
+.pnp/
+.pnp.js
+
+# Build output
+dist/
+build/
+.cache/
+.parcel-cache/
+
+# Local env
+.env
+.env.local
+.env.*.local
+
+# Misc
+.tmp
+coverage/

@@ -1,0 +1,14 @@
+{
+  "name": "MOEMODI",
+  "short_name": "MOEMODI",
+  "description": "Botanical-inspired skincare manufactured in South Africa.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F6F4EE",
+  "theme_color": "#1F4B3A",
+  "icons": [
+    { "src": "favicon-32.png", "sizes": "32x32", "type": "image/png" },
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "assets/images/logos/moemodi-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
