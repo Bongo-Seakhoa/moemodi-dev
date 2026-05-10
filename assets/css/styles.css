@@ -49,6 +49,7 @@
   /* Motion */
   --ease-out: cubic-bezier(.2, .7, .2, 1);
   --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+  --product-photo-mask: radial-gradient(ellipse 42% 96% at 50% 52%, #000 62%, rgba(0, 0, 0, 0.88) 78%, transparent 100%);
 }
 
 /* ----------------------- Base ----------------------- */
@@ -490,30 +491,14 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   place-items: center;
   min-height: 460px;
 }
-.hero-circle {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 380px;
-  height: 380px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.85), rgba(231, 236, 231, 0.5) 60%, transparent 80%);
-  border: 1.5px solid rgba(200, 163, 90, 0.45);
-  box-shadow: var(--shadow);
-}
-.hero-circle::after {
-  content: "";
-  position: absolute;
-  inset: 18px;
-  border-radius: 50%;
-  border: 1px dashed rgba(200, 163, 90, 0.40);
-}
-
 .hero-product {
   position: relative;
   max-height: 380px;
   width: auto;
   filter: drop-shadow(0 28px 28px rgba(31, 75, 58, 0.20));
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--product-photo-mask);
+  mask-image: var(--product-photo-mask);
   transition: transform .4s var(--ease-out);
   z-index: 2;
 }
@@ -744,26 +729,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   transform: scale(1.04);
 }
 
-/* Soft elliptical "floor shadow" under the bottle — gives grounding without contradicting the bottle shape */
-.product-media::after {
-  content: "";
-  position: absolute;
-  bottom: 28px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  height: 28px;
-  background: radial-gradient(ellipse at center,
-    rgba(31, 75, 58, 0.22) 0%,
-    rgba(31, 75, 58, 0.10) 40%,
-    transparent 75%);
-  z-index: 1;
-  pointer-events: none;
-  filter: blur(2px);
-  transition: width .4s var(--ease-out), opacity .4s var(--ease-out);
-}
-.product-card:hover .product-media::after { width: 60%; opacity: 0.85; }
-
 .product-media img {
   position: relative;
   max-height: 100%;
@@ -772,6 +737,9 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   max-width: 100%;
   object-fit: contain;
   filter: drop-shadow(0 18px 22px rgba(31, 75, 58, 0.22));
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--product-photo-mask);
+  mask-image: var(--product-photo-mask);
   transition: transform .4s var(--ease-out);
   z-index: 2;
   margin-top: auto;
@@ -1033,20 +1001,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   display: grid;
   place-items: center;
   min-height: 320px;
-}
-.wholesale-figure::before {
-  content: "";
-  position: absolute;
-  width: 380px; height: 380px;
-  border-radius: 50%;
-  border: 1.5px solid rgba(200, 163, 90, 0.55);
-}
-.wholesale-figure::after {
-  content: "";
-  position: absolute;
-  width: 320px; height: 320px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 65%);
 }
 .wholesale-figure img {
   position: relative;
@@ -1350,20 +1304,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   min-height: 520px;
   padding: 0;
 }
-/* Soft elliptical floor shadow under the bottle — gives grounding without a circular cutout */
-.pdp-stage::after {
-  content: "";
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 56%;
-  height: 30px;
-  background: radial-gradient(ellipse at center, rgba(31, 75, 58, 0.30) 0%, rgba(31, 75, 58, 0.10) 40%, transparent 75%);
-  filter: blur(3px);
-  z-index: 0;
-  pointer-events: none;
-}
 .pdp-hero-img {
   position: relative;
   z-index: 1;
@@ -1371,6 +1311,9 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   width: auto;
   max-width: 100%;
   filter: drop-shadow(0 28px 30px rgba(31, 75, 58, 0.25));
+  mix-blend-mode: multiply;
+  -webkit-mask-image: var(--product-photo-mask);
+  mask-image: var(--product-photo-mask);
   transition: transform .5s var(--ease-out);
 }
 .pdp-stage:hover .pdp-hero-img { transform: translateY(-6px) scale(1.02); }
@@ -1724,21 +1667,43 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 @media (max-width: 880px) {
   .pdp-hero-grid,
   .pdp-grid,
-  .pdp-cta-inner { grid-template-columns: 1fr; gap: 40px; }
-  .pdp-stage { min-height: 420px; }
-  .pdp-hero-img { max-height: 420px; }
+  .pdp-cta-inner { grid-template-columns: 1fr; gap: 36px; }
+  .pdp-stage { min-height: 380px; }
+  .pdp-hero-img { max-height: 380px; }
   .pdp-cta-actions { flex-direction: row; flex-wrap: wrap; }
   .pdp-cta-actions .btn { flex: 1 1 auto; }
+  .pdp-card { padding: 24px; }
+  .pdp-ingredient-card { padding: 22px; }
+}
+@media (max-width: 720px) {
+  .pdp-feature-grid { grid-template-columns: 1fr; }
+  .pdp-stage { min-height: 340px; }
+  .pdp-hero-img { max-height: 340px; }
+  .pdp-section { padding: 48px 0; }
+  .pdp-meta { gap: 18px; column-gap: 24px; }
+  .pdp-meta strong { font-size: 1.25rem; }
 }
 @media (max-width: 540px) {
-  .pdp-feature-grid { grid-template-columns: 1fr; }
   .pdp-related-grid { grid-template-columns: 1fr; }
-  .pdp-stage { min-height: 340px; padding: 0; }
-  .pdp-hero-img { max-height: 340px; }
-  .pdp-actions .btn { flex: 1 1 auto; justify-content: center; }
-  .pdp-meta { gap: 18px; }
-  .pdp-meta strong { font-size: 1.2rem; }
-  .breadcrumb { font-size: 0.8rem; padding-top: 16px; }
+  .pdp-stage { min-height: 300px; padding: 0; }
+  .pdp-hero-img { max-height: 320px; }
+  /* Force PDP action and CTA buttons full-width on phones for proper tap targets */
+  .pdp-actions { gap: 8px; }
+  .pdp-actions .btn { flex: 1 1 100%; width: 100%; justify-content: center; }
+  .pdp-cta-actions { flex-direction: column; }
+  .pdp-cta-actions .btn { width: 100%; flex: 1 1 100%; }
+  .pdp-meta { gap: 14px; }
+  .pdp-meta li { flex: 1 1 calc(50% - 7px); }
+  .pdp-meta strong { font-size: 1.15rem; }
+  .breadcrumb { font-size: 0.78rem; padding-top: 14px; }
+  .pdp-card { padding: 20px; border-radius: var(--r-md); }
+  .pdp-ingredient-card { padding: 18px; }
+  .pdp-ingredient-list li { padding: 10px 12px; }
+  .pdp-ingredient-list strong { font-size: 0.96rem; }
+  .pdp-ingredient-list span { font-size: 0.86rem; }
+  /* Bigger tap target on size pills */
+  .pdp-sizes .size-pill { padding: 12px 22px; font-size: 0.92rem; min-height: 44px; }
+  .pdp-related-card img { max-height: 160px; }
 }
 
 /* ----------------------- Floating WhatsApp ----------------------- */
@@ -1788,10 +1753,12 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 }
 
 @media (max-width: 880px) {
+  /* Mobile/tablet nav */
   .primary-nav { display: none; }
   .nav-cta { display: none; }
   .nav-toggle { display: block; }
 
+  /* Two-column layouts collapse */
   .hero-grid,
   .about-grid,
   .buy-grid,
@@ -1803,10 +1770,14 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 
   .trust-grid { grid-template-columns: repeat(2, 1fr); }
 
+  /* Hero — keep the trio composition but smaller */
   .hero-stage { min-height: 380px; }
-  .hero-circle { width: 300px; height: 300px; }
   .hero-product { max-height: 280px; }
   .hero-product-left, .hero-product-right { max-height: 220px; }
+
+  /* Home product cards still 2-up but tighter */
+  .product-media { height: 380px; padding: 16px 16px 28px; }
+  .product-media img { height: 320px; }
 
   .form-row { grid-template-columns: 1fr; }
   .footer-bottom-inner { flex-direction: column; align-items: flex-start; }
@@ -1816,28 +1787,47 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 
 @media (max-width: 720px) {
   .container { width: calc(100% - 32px); }
-  .section { padding: 64px 0; }
+  .section { padding: 56px 0; }
 
-  .hero { padding: 36px 0 24px; }
+  /* Hero polish */
+  .hero { padding: 32px 0 24px; }
   .hero-watermark { width: 320px; right: -100px; opacity: 0.045; }
   .hero-orb-1 { width: 320px; height: 320px; }
   .hero-orb-2 { width: 260px; height: 260px; }
 
   .hero-stage { min-height: 340px; }
-  .hero-circle { width: 260px; height: 260px; }
   .hero-product { max-height: 240px; }
   .hero-product-left { transform: translate(-48%, 14px) rotate(-6deg); max-height: 180px; }
   .hero-product-right { transform: translate(48%, 14px) rotate(6deg); max-height: 180px; }
   .hero-stage:hover .hero-product-left  { transform: translate(-48%, 14px) rotate(-6deg); }
   .hero-stage:hover .hero-product-right { transform: translate(48%, 14px) rotate(6deg); }
   .hero-stage:hover .hero-product-center { transform: translateY(-8px); }
+  /* Single column product grid kicks in earlier — the cards are tall and read better full width */
+  .product-grid { grid-template-columns: 1fr; gap: 18px; }
+  .product-media { height: 400px; padding: 16px 16px 28px; }
+  .product-media img { height: 320px; max-width: 92%; }
+  .product-card { padding: 20px; }
 
-  .product-actions .btn { flex: 1 1 auto; }
+  .product-actions { gap: 10px; }
+  .product-actions .btn { flex: 1 1 100%; width: 100%; justify-content: center; min-height: 44px; }
+
+  /* Touch overlay: the hover never fires, so render the CTA inline */
+  .product-overlay { position: static; opacity: 1; transform: none; pointer-events: auto; padding: 14px 0 0; background: none; }
+  .product-overlay-hint { display: none; }
+  .product-overlay-cta {
+    background: transparent;
+    color: var(--mm-botanical-green);
+    border: 1px solid var(--mm-botanical-green);
+    box-shadow: none;
+    width: 100%;
+    justify-content: center;
+    min-height: 44px;
+  }
+  .product-overlay-cta:hover { background: var(--mm-botanical-green); color: #fff; }
 }
 
 @media (max-width: 540px) {
   .container { width: calc(100% - 28px); }
-  .product-grid { grid-template-columns: 1fr; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; padding-bottom: 40px; }
   .trust-grid { grid-template-columns: 1fr; }
   .about-stats { grid-template-columns: 1fr; }
@@ -1851,31 +1841,18 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   .display { font-size: 2.4rem; }
   .display br { display: none; }
 
-  /* Hide the side-rotated bottles on the smallest phones; keep the centerpiece */
+  /* Hide the side-rotated bottles on small phones; keep the centerpiece */
   .hero-product-left, .hero-product-right { display: none; }
   .hero-stage { min-height: 280px; }
-  .hero-circle { width: 240px; height: 240px; }
   .hero-product { max-height: 240px; }
 
-  .cta-row .btn { flex: 1 1 100%; justify-content: center; }
-  .product-actions { gap: 8px; }
-  .product-actions .btn { width: 100%; }
+  .cta-row .btn { flex: 1 1 100%; justify-content: center; min-height: 44px; }
 
-  .product-media { height: 380px; padding: 14px 14px 24px; }
-  .product-media img { height: 320px; max-width: 95%; }
-  .product-media::after { bottom: 18px; height: 22px; }
-  /* On touch devices the hover overlay never fires; show the CTA inline below the image instead */
-  .product-overlay { position: static; opacity: 1; transform: none; pointer-events: auto; padding: 14px 0 0; background: none; }
-  .product-overlay-hint { display: none; }
-  .product-overlay-cta {
-    background: transparent;
-    color: var(--mm-botanical-green);
-    border: 1px solid var(--mm-botanical-green);
-    box-shadow: none;
-    width: 100%;
-    justify-content: center;
-  }
-  .product-overlay-cta:hover { background: var(--mm-botanical-green); color: #fff; }
+  /* Product card on phone — tighter, image still dominates the frame with a strip of texture */
+  .product-media { height: 360px; padding: 14px 14px 22px; }
+  .product-media img { height: 300px; max-width: 92%; }
+  .product-card { padding: 20px; }
+  .product-name { font-size: 1.25rem; }
 
   .retailer-card { padding: 18px; gap: 14px; }
   .retailer-icon { width: 48px; height: 48px; }
@@ -1883,8 +1860,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 
   .wholesale-figure { min-height: 240px; }
   .wholesale-figure img { max-height: 280px; }
-  .wholesale-figure::before { width: 280px; height: 280px; }
-  .wholesale-figure::after { width: 240px; height: 240px; }
 
   .float-wa { right: 14px; bottom: 14px; }
   h2 { font-size: clamp(1.6rem, 7vw, 2.1rem); }
@@ -1893,10 +1868,15 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 }
 
 @media (max-width: 380px) {
-  .display { font-size: 2.1rem; }
-  .brand-word { font-size: 1.2rem; }
+  .display { font-size: 2.05rem; }
+  .brand-word { font-size: 1.15rem; }
   .brand-mark { width: 38px; height: 38px; }
   .hero-meta { flex-direction: column; gap: 12px; }
+  .product-media { height: 320px; padding: 12px 12px 20px; }
+  .product-media img { height: 260px; max-width: 90%; }
+  .product-name { font-size: 1.18rem; }
+  .pdp-stage { min-height: 260px; }
+  .pdp-hero-img { max-height: 280px; }
 }
 
 /* ----------------------- Print ----------------------- */
