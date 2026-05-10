@@ -49,7 +49,6 @@
   /* Motion */
   --ease-out: cubic-bezier(.2, .7, .2, 1);
   --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
-  --product-photo-mask: radial-gradient(ellipse 42% 96% at 50% 52%, #000 62%, rgba(0, 0, 0, 0.88) 78%, transparent 100%);
 }
 
 /* ----------------------- Base ----------------------- */
@@ -496,9 +495,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   max-height: 380px;
   width: auto;
   filter: drop-shadow(0 28px 28px rgba(31, 75, 58, 0.20));
-  mix-blend-mode: multiply;
-  -webkit-mask-image: var(--product-photo-mask);
-  mask-image: var(--product-photo-mask);
   transition: transform .4s var(--ease-out);
   z-index: 2;
 }
@@ -737,9 +733,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   max-width: 100%;
   object-fit: contain;
   filter: drop-shadow(0 18px 22px rgba(31, 75, 58, 0.22));
-  mix-blend-mode: multiply;
-  -webkit-mask-image: var(--product-photo-mask);
-  mask-image: var(--product-photo-mask);
   transition: transform .4s var(--ease-out);
   z-index: 2;
   margin-top: auto;
@@ -1311,9 +1304,6 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   width: auto;
   max-width: 100%;
   filter: drop-shadow(0 28px 30px rgba(31, 75, 58, 0.25));
-  mix-blend-mode: multiply;
-  -webkit-mask-image: var(--product-photo-mask);
-  mask-image: var(--product-photo-mask);
   transition: transform .5s var(--ease-out);
 }
 .pdp-stage:hover .pdp-hero-img { transform: translateY(-6px) scale(1.02); }
