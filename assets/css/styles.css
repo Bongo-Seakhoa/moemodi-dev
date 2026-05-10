@@ -417,7 +417,7 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("../images/backgrounds/botanical-2.png");
+  background-image: url("../images/backgrounds/botanical-2.jpg");
   background-size: 720px auto;
   background-position: top right;
   background-repeat: no-repeat;
@@ -720,7 +720,7 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   position: absolute;
   inset: 0;
   z-index: 0;
-  background-image: url("../images/backgrounds/botanical-2.png");
+  background-image: url("../images/backgrounds/botanical-2.jpg");
   background-size: cover;
   background-position: center;
   opacity: 0.30;
@@ -728,11 +728,11 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   pointer-events: none;
 }
 .product-card[data-accent="rose"] .product-media::before {
-  background-image: url("../images/backgrounds/botanical-3.png");
+  background-image: url("../images/backgrounds/botanical-3.jpg");
   opacity: 0.38;
 }
 .product-card[data-accent="green"] .product-media::before {
-  background-image: url("../images/backgrounds/botanical-2.png");
+  background-image: url("../images/backgrounds/botanical-2.jpg");
   opacity: 0.28;
 }
 
@@ -931,7 +931,7 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   content: "";
   position: absolute;
   inset: 0;
-  background-image: url("../images/backgrounds/botanical-4.png");
+  background-image: url("../images/backgrounds/botanical-4.jpg");
   background-size: cover;
   background-position: center;
   opacity: 0.22;
