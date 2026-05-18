@@ -207,7 +207,7 @@ When your products go live on Takealot:
 In `index.html`:
 - Phone number `+27 72 212 1348` &mdash; appears in nav, hero, wholesale,
   contact, footer, JSON-LD and the floating WhatsApp button.
-- Email `hello@moemodi.co.za` is a placeholder &mdash; update wherever it
+- Email `Selina@gmail.com` is the current contact address &mdash; update wherever it
   appears (`mailto:` links and the JS `EMAIL_TO` constant in
   `assets/js/main.js`).
 - Address is intentionally generic ("South Africa") until finalised.

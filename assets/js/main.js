@@ -104,7 +104,7 @@
   // -------- Contact form --------
   var form = document.getElementById('contact-form');
   var waBtn = document.getElementById('send-whatsapp');
-  var EMAIL_TO = 'hello@moemodi.co.za';
+  var EMAIL_TO = 'Selina@gmail.com';
   var WA_NUMBER = '27722121348';
 
   function getFields() {
