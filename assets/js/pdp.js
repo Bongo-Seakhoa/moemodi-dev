@@ -18,7 +18,7 @@
     });
   }
 
-  function updateForSize(value) {
+  function updateForSize(value, keepUrl) {
     var sizeNum = (value || '').replace(/\D/g, '');
     var src = heroImg.getAttribute('data-img-' + sizeNum);
     if (src) heroImg.setAttribute('src', src);
@@ -29,7 +29,7 @@
       waLink.href = 'https://wa.me/' + phoneNumber + '?text=' + encodeURIComponent(msg);
     }
     setActivePill(value);
-    if (history.replaceState) history.replaceState(null, '', '#size-' + value);
+    if (!keepUrl && history.replaceState) history.replaceState(null, '', '#size-' + value);
   }
 
   sizeInputs.forEach(function (input) {
@@ -48,8 +48,8 @@
     var target = document.querySelector('input[name="size"][value="' + hash + '"]');
     if (target) { target.checked = true; updateForSize(hash); }
   } else {
-    // Initialise active pill state from current checked input
+    // Sync image, alt and WhatsApp text with the default checked size.
     var checked = document.querySelector('input[name="size"]:checked');
-    if (checked) setActivePill(checked.value);
+    if (checked) updateForSize(checked.value, true);
   }
 })();

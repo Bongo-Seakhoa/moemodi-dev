@@ -31,8 +31,11 @@ moemodi-dev/
 │   ├── css/styles.css      # Single production stylesheet
 │   ├── js/main.js          # Vanilla JS (nav, reveal, contact form)
 │   └── images/
-│       ├── logos/          # Primary, icon, horizontal, watermark
-│       ├── products/       # 5 SKUs + group hero image
+│       ├── _build_web_images.py  # Rebuilds every derived image below
+│       ├── logos/          # Primary, icon, horizontal, watermark (+ web/ sizes)
+│       ├── products/       # Transparent WebP cutouts used by the site
+│       │   └── studio/     # Original studio renders (source of the cutouts)
+│       ├── social/         # 1200x630 link-preview cards (og:image)
 │       └── backgrounds/    # Botanical decorative imagery
 ├── .gitignore
 ├── LICENSE                 # Proprietary brand, internal-use code
@@ -74,6 +77,22 @@ php -S localhost:8080
 ```
 
 Then open <http://localhost:8080>.
+
+### Product images
+
+The site shows transparent cutouts (`assets/images/products/*.webp`), never
+the studio renders directly. After adding or replacing a render in
+`assets/images/products/studio/`, rebuild the cutouts, web logo sizes and
+social cards in one step:
+
+```sh
+pip install pillow numpy scipy
+python assets/images/_build_web_images.py
+```
+
+Check the output on a dark background before committing: the script removes
+the white sweep and the floor shadow, and a new render with a different
+lighting setup may need its thresholds adjusted.
 
 ---
 

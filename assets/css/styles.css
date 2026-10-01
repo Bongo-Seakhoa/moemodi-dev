@@ -315,7 +315,7 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   gap: 12px;
   text-decoration: none;
 }
-.brand-mark { width: 44px; height: 44px; }
+.brand-mark { width: 44px; height: 44px; object-fit: contain; }
 .brand-word {
   font-family: var(--font-heading);
   font-size: 1.35rem;
@@ -484,40 +484,123 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   font-weight: 600;
 }
 
+/* Hero gallery: five products on a shared floor. data-pos is the offset from
+   the centre slide; without JS the markup already shows the static trio. */
 .hero-stage {
+  --slide-h: 380px;
+  --slide-w: 300px;
+  --off-1: 36%;
+  --off-2: 60%;
   position: relative;
-  display: grid;
-  place-items: center;
-  min-height: 460px;
+  min-height: 480px;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
 }
-.hero-product {
-  position: relative;
-  max-height: 380px;
+.hero-stage::before {
+  content: "";
+  position: absolute;
+  left: 20%; right: 20%;
+  bottom: 52px;
+  height: 36px;
+  background: radial-gradient(ellipse at center, rgba(31, 75, 58, 0.20), transparent 70%);
+  pointer-events: none;
+}
+.hero-track {
+  position: absolute;
+  inset: 0 0 64px 0;
+}
+.hero-slide {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: block;
+  transform-origin: 50% 100%;
+  transform: translateX(-50%) scale(0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+  transition: left .7s var(--ease-out), transform .7s var(--ease-out), opacity .5s var(--ease-out);
+}
+.hero-slide:hover { opacity: 1; }
+.hero-slide img {
   width: auto;
-  filter: drop-shadow(0 28px 28px rgba(31, 75, 58, 0.20));
+  height: auto;
+  max-height: var(--slide-h);
+  max-width: var(--slide-w);
+  filter: drop-shadow(0 24px 22px rgba(31, 75, 58, 0.22));
   transition: transform .4s var(--ease-out);
+}
+/* Jars are squat next to the bottle, and 250ml smaller again, as on a shelf. */
+.hero-slide[data-kind="jar"] img {
+  max-height: calc(var(--slide-h) * 0.78);
+  max-width: calc(var(--slide-w) * 0.8);
+}
+.hero-slide[data-kind="jar"][data-size="250ml"] img {
+  max-height: calc(var(--slide-h) * 0.62);
+  max-width: calc(var(--slide-w) * 0.64);
+}
+.hero-slide[data-pos="0"] {
+  transform: translateX(-50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 3;
+}
+.hero-slide[data-pos="0"]:hover img { transform: translateY(-8px); }
+.hero-slide[data-pos="-1"],
+.hero-slide[data-pos="1"] {
+  opacity: 0.96;
+  pointer-events: auto;
   z-index: 2;
 }
-.hero-product-left {
-  grid-area: 1 / 1;
-  transform: translate(-58%, 18px) rotate(-6deg);
-  max-height: 300px;
-  z-index: 1;
+.hero-slide[data-pos="-1"] { left: calc(50% - var(--off-1)); transform: translateX(-50%) scale(0.72) rotate(-5deg); }
+.hero-slide[data-pos="1"]  { left: calc(50% + var(--off-1)); transform: translateX(-50%) scale(0.72) rotate(5deg); }
+.hero-slide[data-pos="-2"] { left: calc(50% - var(--off-2)); }
+.hero-slide[data-pos="2"]  { left: calc(50% + var(--off-2)); }
+
+.hero-gallery-ui {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 4;
 }
-.hero-product-center {
-  grid-area: 1 / 1;
-  z-index: 3;
-  transform: translateY(-8px);
+.hero-gallery-ui[hidden] { display: none; }
+.hero-arrow {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(31, 75, 58, 0.22);
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--mm-botanical-green);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transition: background-color .2s var(--ease-out), color .2s var(--ease-out), transform .2s var(--ease-out);
 }
-.hero-product-right {
-  grid-area: 1 / 1;
-  transform: translate(58%, 18px) rotate(6deg);
-  max-height: 300px;
-  z-index: 1;
+.hero-arrow:hover { background: var(--mm-botanical-green); color: #fff; transform: translateY(-1px); }
+.hero-arrow svg { width: 18px; height: 18px; }
+.hero-caption {
+  margin: 0;
+  min-width: 15.5rem;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.08rem;
+  color: var(--mm-botanical-green);
+  line-height: 1.25;
 }
-.hero-stage:hover .hero-product-left  { transform: translate(-66%, 14px) rotate(-8deg); }
-.hero-stage:hover .hero-product-right { transform: translate(66%, 14px) rotate(8deg); }
-.hero-stage:hover .hero-product-center { transform: translateY(-14px); }
+.hero-caption-size {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mm-muted-gold);
+  margin-left: 4px;
+}
 
 /* ----------------------- Trust strip ----------------------- */
 .trust-strip {
@@ -645,10 +728,18 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   grid-template-columns: repeat(3, 1fr);
   gap: 26px;
 }
-.product-grid > .product-card:nth-child(4),
-.product-grid > .product-card:nth-child(5) {
-  /* keep last two cards on a balanced second row */
+.swipe-hint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin: -28px 0 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mm-muted-gold);
 }
+.swipe-hint svg { width: 16px; height: 16px; }
 
 .product-card {
   background: rgba(255, 255, 255, 0.85);
@@ -730,7 +821,7 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   max-height: 100%;
   height: 380px;
   width: auto;
-  max-width: 100%;
+  max-width: 86%;
   object-fit: contain;
   filter: drop-shadow(0 18px 22px rgba(31, 75, 58, 0.22));
   transition: transform .4s var(--ease-out);
@@ -1139,7 +1230,15 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   gap: 40px;
   padding-bottom: 60px;
 }
-.footer-brand .footer-mark { width: 56px; }
+/* The mark is dark green, so it needs an ivory tile on the forest footer. */
+.footer-brand .footer-mark {
+  width: 56px;
+  height: 56px;
+  padding: 6px;
+  object-fit: contain;
+  background: var(--mm-ivory);
+  border-radius: 14px;
+}
 .footer-word {
   color: var(--mm-muted-gold);
   font-family: var(--font-heading);
@@ -1760,10 +1859,7 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
 
   .trust-grid { grid-template-columns: repeat(2, 1fr); }
 
-  /* Hero — keep the trio composition but smaller */
-  .hero-stage { min-height: 380px; }
-  .hero-product { max-height: 280px; }
-  .hero-product-left, .hero-product-right { max-height: 220px; }
+  .hero-stage { --slide-h: 300px; --slide-w: 250px; min-height: 400px; }
 
   /* Home product cards still 2-up but tighter */
   .product-media { height: 380px; padding: 16px 16px 28px; }
@@ -1785,15 +1881,27 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   .hero-orb-1 { width: 320px; height: 320px; }
   .hero-orb-2 { width: 260px; height: 260px; }
 
-  .hero-stage { min-height: 340px; }
-  .hero-product { max-height: 240px; }
-  .hero-product-left { transform: translate(-48%, 14px) rotate(-6deg); max-height: 180px; }
-  .hero-product-right { transform: translate(48%, 14px) rotate(6deg); max-height: 180px; }
-  .hero-stage:hover .hero-product-left  { transform: translate(-48%, 14px) rotate(-6deg); }
-  .hero-stage:hover .hero-product-right { transform: translate(48%, 14px) rotate(6deg); }
-  .hero-stage:hover .hero-product-center { transform: translateY(-8px); }
-  /* Single column product grid kicks in earlier — the cards are tall and read better full width */
-  .product-grid { grid-template-columns: 1fr; gap: 18px; }
+  .hero-stage { --slide-h: 270px; --slide-w: 220px; --off-1: 34%; min-height: 370px; }
+
+  /* Products become a swipeable row that bleeds to the screen edges. */
+  .product-grid {
+    --bleed: 16px;
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 84%;
+    gap: 14px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--bleed);
+    margin-inline: calc(var(--bleed) * -1);
+    padding: 8px var(--bleed) 28px;
+    scrollbar-width: none;
+  }
+  .product-grid::-webkit-scrollbar { display: none; }
+  .product-grid > .product-card { scroll-snap-align: start; }
+  .product-card:hover { transform: none; }
+  .swipe-hint { display: flex; }
   .product-media { height: 400px; padding: 16px 16px 28px; }
   .product-media img { height: 320px; max-width: 92%; }
   .product-card { padding: 20px; }
@@ -1801,19 +1909,9 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   .product-actions { gap: 10px; }
   .product-actions .btn { flex: 1 1 100%; width: 100%; justify-content: center; min-height: 44px; }
 
-  /* Touch overlay: the hover never fires, so render the CTA inline */
-  .product-overlay { position: static; opacity: 1; transform: none; pointer-events: auto; padding: 14px 0 0; background: none; }
-  .product-overlay-hint { display: none; }
-  .product-overlay-cta {
-    background: transparent;
-    color: var(--mm-botanical-green);
-    border: 1px solid var(--mm-botanical-green);
-    box-shadow: none;
-    width: 100%;
-    justify-content: center;
-    min-height: 44px;
-  }
-  .product-overlay-cta:hover { background: var(--mm-botanical-green); color: #fff; }
+  /* No hover on touch: the image and the "View product" button already link
+     to the product page, so the overlay CTA would only crowd the image. */
+  .product-overlay { display: none; }
 }
 
 @media (max-width: 540px) {
@@ -1831,10 +1929,9 @@ h3 { font-size: clamp(1.2rem, 1.6vw, 1.45rem); }
   .display { font-size: 2.4rem; }
   .display br { display: none; }
 
-  /* Hide the side-rotated bottles on small phones; keep the centerpiece */
-  .hero-product-left, .hero-product-right { display: none; }
-  .hero-stage { min-height: 280px; }
-  .hero-product { max-height: 240px; }
+  .hero-stage { --slide-h: 240px; --slide-w: 190px; --off-1: 33%; min-height: 330px; }
+  .hero-caption { min-width: 0; font-size: 1rem; }
+  .product-grid { --bleed: 14px; grid-auto-columns: 86%; }
 
   .cta-row .btn { flex: 1 1 100%; justify-content: center; min-height: 44px; }
 

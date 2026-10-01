@@ -3,6 +3,7 @@
    Vanilla JS. No build step.
    - Sticky nav state
    - Mobile menu toggle
+   - Hero product gallery (autoplay, arrows, keys, swipe)
    - Scroll reveal (Intersection Observer)
    - Contact form (mailto + WhatsApp deeplink, no backend)
    - Footer year
@@ -100,6 +101,107 @@
       if (history.replaceState) history.replaceState(null, '', id);
     });
   });
+
+  // -------- Hero product gallery --------
+  var gallery = document.querySelector('[data-gallery]');
+  if (gallery) {
+    var slides = Array.prototype.slice.call(gallery.querySelectorAll('.hero-slide'));
+    var galleryUi = gallery.querySelector('.hero-gallery-ui');
+    var caption = gallery.querySelector('.hero-caption');
+    var captionName = gallery.querySelector('.hero-caption-name');
+    var captionSize = gallery.querySelector('.hero-caption-size');
+    var count = slides.length;
+    var current = 0;
+    var timer = null;
+    var inView = true;
+    var swiped = false;
+    var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    slides.forEach(function (slide, i) {
+      if (slide.getAttribute('data-pos') === '0') current = i;
+      slide.setAttribute('draggable', 'false');
+      slide.querySelector('img').setAttribute('draggable', 'false');
+    });
+
+    var render = function () {
+      slides.forEach(function (slide, i) {
+        var offset = ((i - current) % count + count) % count;
+        if (offset > count / 2) offset -= count;
+        slide.setAttribute('data-pos', String(offset));
+        slide.setAttribute('aria-hidden', Math.abs(offset) <= 1 ? 'false' : 'true');
+        slide.tabIndex = offset === 0 ? 0 : -1;
+      });
+      captionName.textContent = slides[current].getAttribute('data-name');
+      captionSize.textContent = slides[current].getAttribute('data-size');
+    };
+
+    var stop = function () {
+      if (timer) { clearInterval(timer); timer = null; }
+    };
+    var start = function () {
+      if (reduceMotion || timer || !inView || document.hidden) return;
+      timer = setInterval(function () { go(1, false); }, 4500);
+    };
+    var go = function (step, byUser) {
+      current = (current + step + count) % count;
+      // Announce only changes the visitor asked for, not the autoplay.
+      caption.setAttribute('aria-live', byUser ? 'polite' : 'off');
+      render();
+      if (byUser) { stop(); start(); }
+    };
+
+    // A side product rotates into the centre; the centre one opens its page.
+    slides.forEach(function (slide) {
+      slide.addEventListener('click', function (e) {
+        var pos = parseInt(slide.getAttribute('data-pos'), 10);
+        if (swiped || pos !== 0) {
+          e.preventDefault();
+          if (!swiped) go(pos, true);
+        }
+        swiped = false;
+      });
+    });
+    galleryUi.querySelectorAll('.hero-arrow').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        go(parseInt(btn.getAttribute('data-dir'), 10), true);
+      });
+    });
+    gallery.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowLeft') go(-1, true);
+      if (e.key === 'ArrowRight') go(1, true);
+    });
+
+    var startX = null;
+    gallery.addEventListener('pointerdown', function (e) { startX = e.clientX; swiped = false; });
+    gallery.addEventListener('pointerup', function (e) {
+      if (startX === null) return;
+      var dx = e.clientX - startX;
+      startX = null;
+      if (Math.abs(dx) > 40) {
+        swiped = true;
+        go(dx < 0 ? 1 : -1, true);
+      }
+    });
+    gallery.addEventListener('pointercancel', function () { startX = null; });
+
+    gallery.addEventListener('mouseenter', stop);
+    gallery.addEventListener('mouseleave', start);
+    gallery.addEventListener('focusin', stop);
+    gallery.addEventListener('focusout', start);
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { stop(); } else { start(); }
+    });
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        if (inView) { start(); } else { stop(); }
+      }).observe(gallery);
+    }
+
+    galleryUi.hidden = false;
+    render();
+    start();
+  }
 
   // -------- Contact form --------
   var form = document.getElementById('contact-form');
